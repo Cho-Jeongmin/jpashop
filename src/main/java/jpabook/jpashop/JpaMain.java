@@ -25,15 +25,8 @@ public class JpaMain {
     tx.begin();
 
     try {
-      CriteriaBuilder cb = em.getCriteriaBuilder();
-      CriteriaQuery<Member> query = cb.createQuery(Member.class);
-
-      Root<Member> m = query.from(Member.class);
-
-      CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
-      List<Member> resultList = em.createQuery(cq).getResultList();
-
-      // 실무에서는 Criteria 말고 QueryDSL 사용
+      List resultList = em.createNativeQuery(
+          "select MEMBER_ID, city, street, zipcode, USERNAME from MEMBER ").getResultList();
 
       tx.commit();
     } catch (Exception e) {
